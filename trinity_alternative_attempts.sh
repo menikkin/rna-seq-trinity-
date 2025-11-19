@@ -90,5 +90,27 @@ Trinity \
   --CPU 12 \
   --output trinity_localTest
 
-echo "All Trinity alternative attempts completed."
+#!/bin/bash
+#SBATCH --job-name=trinity_run
+#SBATCH --output=trinity_%j.out
+#SBATCH --error=trinity_%j.err
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=24
+#SBATCH --mem=200G
+#SBATCH --time=96:00:00
+#SBATCH --partition=standard
+
+module load trinity/2.15.1
+
+LEFT="Control1_R1_paired.fq.gz,Control2_R1_paired.fq.gz,Control3_R1_paired.fq.gz,Treated1_R1_paired.fq.gz,Treated2_R1_paired.fq.gz,Treated3_R1_paired.fq.gz"
+RIGHT="Control1_R2_paired.fq.gz,Control2_R2_paired.fq.gz,Control3_R2_paired.fq.gz,Treated1_R2_paired.fq.gz,Treated2_R2_paired.fq.gz,Treated3_R2_paired.fq.gz"
+Trinity \
+  --seqType fq \
+  --left $LEFT \
+  --right $RIGHT \
+  --max_memory 200G \
+  --CPU 24 \
+  --output trinity_cdac_out
+
+
 
